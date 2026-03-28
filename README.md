@@ -6,7 +6,7 @@ Det här projektet är nu ombyggt till en statisk webbapp som fungerar direkt p�
 
 - `index.html` innehåller appens struktur.
 - `styles.css` innehåller layout, färger och responsiv design.
-- `script.js` hanterar frågegenerator, poäng, statistik och historik.
+- `script.js` hanterar frågegenerator, poäng, statistik, historik och high score via webbläsarens lokala lagring.
 
 ## Publicera på GitHub Pages
 

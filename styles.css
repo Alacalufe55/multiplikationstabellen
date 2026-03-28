@@ -142,6 +142,12 @@ h1 {
   margin-bottom: 18px;
 }
 
+.bottom-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 1.2fr 0.8fr;
+}
+
 .controls {
   display: flex;
   flex-wrap: wrap;
@@ -264,6 +270,45 @@ select:focus,
   color: var(--danger);
 }
 
+.score-save-card {
+  margin-top: 18px;
+  padding: 18px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.62);
+  display: grid;
+  gap: 14px;
+}
+
+.score-save-card h2 {
+  font-size: 1.35rem;
+}
+
+.save-copy {
+  margin: 8px 0 0;
+  color: var(--muted);
+}
+
+.save-score-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.name-input {
+  flex: 1 1 220px;
+  border: 1px solid rgba(31, 34, 51, 0.12);
+  background: var(--surface-strong);
+  color: var(--text);
+  border-radius: 16px;
+  padding: 14px 16px;
+  font: inherit;
+}
+
+.name-input:focus {
+  outline: 3px solid rgba(108, 149, 255, 0.28);
+  outline-offset: 2px;
+}
+
 .history-header {
   display: flex;
   flex-wrap: wrap;
@@ -286,6 +331,15 @@ select:focus,
   gap: 10px;
 }
 
+.leaderboard-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+  counter-reset: leaderboard;
+}
+
 .history-item,
 .history-empty {
   background: rgba(255, 255, 255, 0.72);
@@ -306,6 +360,42 @@ select:focus,
 
 .history-item.wrong {
   border-left: 6px solid var(--danger);
+}
+
+.leaderboard-item {
+  counter-increment: leaderboard;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.72);
+  border-radius: 16px;
+  padding: 14px 16px;
+}
+
+.leaderboard-item::before {
+  content: counter(leaderboard);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--accent-soft);
+  color: var(--accent-dark);
+  font-weight: 700;
+}
+
+.leaderboard-name {
+  font-weight: 700;
+}
+
+.leaderboard-details,
+.leaderboard-meta {
+  color: var(--muted);
+}
+
+.leaderboard-meta {
+  text-align: right;
 }
 
 .history-expression {
@@ -346,6 +436,10 @@ select:focus,
     padding: 28px 14px 40px;
   }
 
+  .bottom-grid {
+    grid-template-columns: 1fr;
+  }
+
   .practice-card,
   .history-card {
     padding: 18px;
@@ -367,6 +461,15 @@ select:focus,
   }
 
   .history-meta {
+    text-align: left;
+  }
+
+  .leaderboard-item {
+    grid-template-columns: auto 1fr;
+  }
+
+  .leaderboard-meta {
+    grid-column: 2;
     text-align: left;
   }
 }

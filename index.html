@@ -77,17 +77,52 @@
       <p id="feedback" class="feedback" aria-live="polite">
         Börja med att skriva svaret och trycka på Svara.
       </p>
+
+      <div class="score-save-card" aria-labelledby="leaderboard-save-heading">
+        <div>
+          <h2 id="leaderboard-save-heading">Spara high score</h2>
+          <p class="save-copy">Skriv ditt namn och lägg till resultatet på topplistan.</p>
+        </div>
+
+        <form id="save-score-form" class="save-score-form" novalidate>
+          <label class="sr-only" for="player-name">Ditt namn</label>
+          <input
+            id="player-name"
+            name="playerName"
+            class="name-input"
+            type="text"
+            maxlength="20"
+            autocomplete="nickname"
+            placeholder="Ditt namn"
+            required
+          >
+          <button class="ghost-button" type="submit">Spara score</button>
+        </form>
+      </div>
     </section>
 
-    <section class="history-card" aria-labelledby="history-heading">
-      <div class="history-header">
-        <h2 id="history-heading">Senaste rundor</h2>
-        <p id="encouragement">Du är igång. Första rätta svaret startar sviten.</p>
-      </div>
+    <section class="bottom-grid">
+      <section class="history-card" aria-labelledby="history-heading">
+        <div class="history-header">
+          <h2 id="history-heading">Senaste rundor</h2>
+          <p id="encouragement">Du är igång. Första rätta svaret startar sviten.</p>
+        </div>
 
-      <ul id="history-list" class="history-list">
-        <li class="history-empty">Dina senaste svar visas här.</li>
-      </ul>
+        <ul id="history-list" class="history-list">
+          <li class="history-empty">Dina senaste svar visas här.</li>
+        </ul>
+      </section>
+
+      <section class="history-card leaderboard-card" aria-labelledby="leaderboard-heading">
+        <div class="history-header">
+          <h2 id="leaderboard-heading">High score</h2>
+          <p>Topplistan sparas lokalt i din webbläsare.</p>
+        </div>
+
+        <ol id="leaderboard-list" class="leaderboard-list">
+          <li class="history-empty">Ingen high score än. Spara första resultatet.</li>
+        </ol>
+      </section>
     </section>
   </main>
 

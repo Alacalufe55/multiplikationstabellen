@@ -5,8 +5,11 @@ const state = {
   bestStreak: 0,
   maxFactor: 10,
   currentQuestion: null,
-  history: []
+  history: [],
+  leaderboard: []
 };
+
+const LEADERBOARD_KEY = "multiplikationstabellen-highscores";
 
 const scoreEl = document.querySelector("#score");
 const answeredEl = document.querySelector("#answered");
@@ -18,9 +21,36 @@ const encouragementEl = document.querySelector("#encouragement");
 const answerFormEl = document.querySelector("#answer-form");
 const answerInputEl = document.querySelector("#answer-input");
 const historyListEl = document.querySelector("#history-list");
+const leaderboardListEl = document.querySelector("#leaderboard-list");
 const maxFactorEl = document.querySelector("#max-factor");
 const newQuestionEl = document.querySelector("#new-question");
 const resetGameEl = document.querySelector("#reset-game");
+const saveScoreFormEl = document.querySelector("#save-score-form");
+const playerNameEl = document.querySelector("#player-name");
+
+function loadLeaderboard() {
+  try {
+    const savedValue = window.localStorage.getItem(LEADERBOARD_KEY);
+    const parsedValue = savedValue ? JSON.parse(savedValue) : [];
+
+    state.leaderboard = Array.isArray(parsedValue) ? parsedValue : [];
+  } catch (error) {
+    state.leaderboard = [];
+  }
+}
+
+function saveLeaderboard() {
+  window.localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(state.leaderboard));
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
 
 function randomFactor(maxFactor) {
   return Math.floor(Math.random() * maxFactor) + 1;
@@ -85,10 +115,78 @@ function updateHistory() {
     .join("");
 }
 
+function updateLeaderboard() {
+  if (state.leaderboard.length === 0) {
+    leaderboardListEl.innerHTML = '<li class="history-empty">Ingen high score än. Spara första resultatet.</li>';
+    return;
+  }
+
+  leaderboardListEl.innerHTML = state.leaderboard
+    .map((entry) => {
+      return `
+        <li class="leaderboard-item">
+          <div>
+            <div class="leaderboard-name">${escapeHtml(entry.name)}</div>
+            <div class="leaderboard-details">${entry.answered} svarade, bästa svit ${entry.bestStreak}</div>
+          </div>
+          <div class="leaderboard-meta">${entry.score} poäng</div>
+        </li>
+      `;
+    })
+    .join("");
+}
+
 function rememberAnswer(entry) {
   state.history.unshift(entry);
   state.history = state.history.slice(0, 8);
   updateHistory();
+}
+
+function sanitizeName(name) {
+  return name.replace(/\s+/g, " ").trim().slice(0, 20);
+}
+
+function saveCurrentScore(event) {
+  event.preventDefault();
+
+  const playerName = sanitizeName(playerNameEl.value);
+
+  if (!playerName) {
+    setFeedback("Skriv ett namn innan du sparar din score.", "error");
+    playerNameEl.focus();
+    return;
+  }
+
+  if (state.answered === 0) {
+    setFeedback("Spela minst en runda innan du sparar din score.", "error");
+    return;
+  }
+
+  state.leaderboard.push({
+    name: playerName,
+    score: state.score,
+    answered: state.answered,
+    bestStreak: state.bestStreak
+  });
+
+  state.leaderboard.sort((left, right) => {
+    if (right.score !== left.score) {
+      return right.score - left.score;
+    }
+
+    if (right.bestStreak !== left.bestStreak) {
+      return right.bestStreak - left.bestStreak;
+    }
+
+    return left.answered - right.answered;
+  });
+
+  state.leaderboard = state.leaderboard.slice(0, 10);
+  saveLeaderboard();
+  updateLeaderboard();
+
+  setFeedback(`${playerName} är nu sparad på high score-tavlan.`, "success");
+  playerNameEl.value = "";
 }
 
 function handleAnswerSubmit(event) {
@@ -150,12 +248,15 @@ maxFactorEl.addEventListener("change", (event) => {
 });
 
 answerFormEl.addEventListener("submit", handleAnswerSubmit);
+saveScoreFormEl.addEventListener("submit", saveCurrentScore);
 newQuestionEl.addEventListener("click", () => {
   setFeedback("Ny fråga framme. Kör!");
   nextQuestion();
 });
 resetGameEl.addEventListener("click", resetGame);
 
+loadLeaderboard();
 updateStats();
 updateHistory();
+updateLeaderboard();
 nextQuestion();
