@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multiplikationstabellen</title>
+  <meta name="description" content="Träna multiplikation direkt i webbläsaren med poäng, statistik och snabb feedback.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <section class="hero">
+      <p class="eyebrow">GitHub Pages-app</p>
+      <h1>Multiplikationstabellen</h1>
+      <p class="intro">
+        Träna huvudräkning med slumpade tal, direkt feedback och en liten resultattavla
+        som gör det roligare att fortsätta.
+      </p>
+    </section>
+
+    <section class="dashboard" aria-label="Statistik">
+      <article class="stat-card">
+        <span class="stat-label">Poäng</span>
+        <strong id="score">0</strong>
+      </article>
+      <article class="stat-card">
+        <span class="stat-label">Besvarade</span>
+        <strong id="answered">0</strong>
+      </article>
+      <article class="stat-card">
+        <span class="stat-label">Rätt i rad</span>
+        <strong id="streak">0</strong>
+      </article>
+      <article class="stat-card">
+        <span class="stat-label">Bästa svit</span>
+        <strong id="best-streak">0</strong>
+      </article>
+    </section>
+
+    <section class="practice-card">
+      <div class="controls">
+        <label class="control-field" for="max-factor">
+          Tabell upp till
+          <select id="max-factor">
+            <option value="10">10</option>
+            <option value="12">12</option>
+            <option value="20">20</option>
+          </select>
+        </label>
+
+        <button class="ghost-button" id="new-question" type="button">Ny fråga</button>
+        <button class="ghost-button" id="reset-game" type="button">Nollställ</button>
+      </div>
+
+      <form id="answer-form" class="quiz-area" novalidate>
+        <p class="question-label">Vad blir</p>
+        <div id="question" class="question" aria-live="polite">3 × 4</div>
+
+        <label class="sr-only" for="answer-input">Skriv ditt svar</label>
+        <input
+          id="answer-input"
+          name="answer"
+          class="answer-input"
+          type="number"
+          inputmode="numeric"
+          autocomplete="off"
+          placeholder="Ditt svar"
+          required
+        >
+
+        <button class="primary-button" type="submit">Svara</button>
+      </form>
+
+      <p id="feedback" class="feedback" aria-live="polite">
+        Börja med att skriva svaret och trycka på Svara.
+      </p>
+    </section>
+
+    <section class="history-card" aria-labelledby="history-heading">
+      <div class="history-header">
+        <h2 id="history-heading">Senaste rundor</h2>
+        <p id="encouragement">Du är igång. Första rätta svaret startar sviten.</p>
+      </div>
+
+      <ul id="history-list" class="history-list">
+        <li class="history-empty">Dina senaste svar visas här.</li>
+      </ul>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
